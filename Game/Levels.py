@@ -17,7 +17,7 @@ class Levels(GameScene):
         GameScene.__init__(self)
 
         self.levels = [
-            'level0.tmx',
+            'level0_my.tmx',
             'level1.tmx',
             'level2.tmx',
             'level3.tmx',
@@ -58,7 +58,7 @@ class Levels(GameScene):
 
     def load_new_level(self, level_num):
         self.all_sprites.empty()
-        self.coins.empty()
+        # self.coins.empty()
         self.mobs.empty()
         self.all_sprites.add(self.player)
 
@@ -76,9 +76,9 @@ class Levels(GameScene):
             Mob(mob_spawn, groups=(self.all_sprites, self.mobs))
 
         # coins
-        for coin_loc in self.map.coin_spawns:
-            Coin(coin_loc[0], coin_loc[1], groups=(self.all_sprites, self.coins))
-            self._total_coins+=1
+        # for coin_loc in self.map.coin_spawns:
+        #     Coin(coin_loc[0], coin_loc[1], groups=(self.all_sprites, self.coins))
+        #     self._total_coins+=1
 
         # make parallax layers
         self.parallax_bg = [
@@ -98,9 +98,9 @@ class Levels(GameScene):
         for i in range(len(self.parallax_fg)):
             self.parallax_fg[i].render(surface, self.camera)
 
-    def render_hud(self, surface):
-        x = 30
-        y = surface.get_rect().height - 40
+    # def render_hud(self, surface):
+    #     x = 30
+    #     y = surface.get_rect().height - 40
 
         # # health
         # surface.blit(self.textures["heart"], (x, y))
@@ -121,8 +121,8 @@ class Levels(GameScene):
             surface.blit(self.map_img, (0, 0), area=self.camera.camera_rect)
             for sprite in self.all_sprites:
                 sprite.render(surface, self.camera)
-
-            self.render_hud(surface)
+            #
+            # self.render_hud(surface)
 
             if settings.DEBUG_DRAW:
                 for obs in self.map.collidables:
@@ -152,10 +152,10 @@ class Levels(GameScene):
             self.player.update(delta_time, self.map, self.mobs, self.coins)
             for mob in self.mobs:
                 mob.update(delta_time, self.map)
-            for coin in self.coins:
-                coin.update(delta_time)
+            # for coin in self.coins:
+            #     coin.update(delta_time)
 
-            if self.player.health == 0:
+            if self.player.health <= 0:
                 self.respawn_player()
 
         # goal reached, fadeout animation

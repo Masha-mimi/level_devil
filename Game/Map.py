@@ -12,7 +12,7 @@ class Map:
         self.mob_spawns = []
         self.coin_spawns = []
         self.collidables = []
-        self.ladders = []
+        # self.ladders = []
         self.spikes = []
 
         self.surface = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
@@ -32,8 +32,8 @@ class Map:
                 self.mob_spawns.append((obj.x, obj.y))
             elif obj.name == 'goal':
                 self.goal = pygame.Rect(obj.x, obj.y, obj.width, obj.height)
-            elif obj.name == 'ladder':
-                self.ladders.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+            # elif obj.name == 'ladder':
+            #     self.ladders.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
             elif obj.name == 'oneway':
                 self.collidables.append(ObstacleOneWay(obj.x, obj.y, obj.width, obj.height))
             elif obj.name == 'slope':

@@ -67,7 +67,7 @@ class Player(RigidBody, pygame.sprite.Sprite):
         self.facing = self.animation.sprites[self.state].default_facing
 
         self.coins = 0
-        self._max_health = 5
+        self._max_health = 1
         self.health = self._max_health
         self._invincible_timer = 0
         self._invincible_time = 3
@@ -124,26 +124,26 @@ class Player(RigidBody, pygame.sprite.Sprite):
             self.can_jump = True
 
         self._ledge_grab(colliding, map.collidables)
-        self._ladder_climb(map.ladders)
+        # self._ladder_climb(map.ladders)
 
         return colliding
 
-    def _ladder_climb(self, ladders):
-        keys = pygame.key.get_pressed()
-        key_pressed = keys[pygame.K_UP] or keys[pygame.K_w] or keys[pygame.K_DOWN] or keys[pygame.K_s]
-        on_ladder = False
-        for ladder in ladders:
-            if self.rect.colliderect(ladder) and ladder.left <= self.rect.centerx <= ladder.right:
-                on_ladder = True
-                break
+    # def _ladder_climb(self, ladders):
+    #     keys = pygame.key.get_pressed()
+    #     key_pressed = keys[pygame.K_UP] or keys[pygame.K_w] or keys[pygame.K_DOWN] or keys[pygame.K_s]
+    #     on_ladder = False
+    #     for ladder in ladders:
+    #         if self.rect.colliderect(ladder) and ladder.left <= self.rect.centerx <= ladder.right:
+    #             on_ladder = True
+    #             break
 
-        if not self.climbing:
-            if on_ladder and key_pressed:
-                self.climbing = True
-                self.can_jump = True
-                self.ledge_grabbing = False
-        elif self.climbing and not on_ladder:
-            self.climbing = False
+        # if not self.climbing:
+        #     if on_ladder and key_pressed:
+        #         self.climbing = True
+        #         self.can_jump = True
+        #         self.ledge_grabbing = False
+        # elif self.climbing and not on_ladder:
+        #     self.climbing = False
 
     def _ledge_grab(self, colliding, collidables):
         x = (self.rect.left - 3) if self.facing == 'left' else (self.rect.right + 3)
