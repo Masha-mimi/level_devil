@@ -17,7 +17,8 @@ class Levels(GameScene):
         GameScene.__init__(self)
 
         self.levels = [
-            'level0_my.tmx',
+            'level_olia_test.tmx',
+            "level_olia_test2.tmx",
             'level1.tmx',
             'level2.tmx',
             'level3.tmx',
