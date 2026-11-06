@@ -55,13 +55,13 @@ class StartMenu(GameScene):
                                     image_path="Resources/images/HUD/portal_1.png",
                                     inactive_image_path="Resources/images/HUD/soon_portal1.png",
                                     callback=lambda: goto_scene("level_manager", 2),
-                                    active=(settings.MAX_UNLOCKED_LEVEL >= 2))
+                                    active=(settings.MAX_UNLOCKED_LEVEL >= 3))
 
         self.start_bttn_l5 = Button((settings.SCREEN_WIDTH // 22 + 210, y - 10), (w, h),
                                     image_path="Resources/images/HUD/portal_1.png",
                                     inactive_image_path="Resources/images/HUD/soon_portal1.png",
                                     callback=lambda: goto_scene("level_manager", 2),
-                                    active=(settings.MAX_UNLOCKED_LEVEL >= 2))
+                                    active=(settings.MAX_UNLOCKED_LEVEL >= 4))
 
         self.settings_bttn = Button((settings.SCREEN_WIDTH//40, y+90), (w, h),
                                     callback=lambda: goto_scene("settings_menu"),
