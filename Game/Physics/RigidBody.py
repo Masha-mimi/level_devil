@@ -1,7 +1,6 @@
 import pygame
 from .. import settings
 from .Collidable import Collidable
-from .Obstacle import ObstacleOneWay
 from ..UI import Font
 
 
@@ -50,11 +49,6 @@ class RigidBody(Collidable, pygame.sprite.Sprite):
                     overlap_y, collision_dir = collidable.get_overlap_y(self.rect)
                     # if collision occurred
                     if overlap_y:
-                        if isinstance(collidable, ObstacleOneWay):
-                            if self.v_y < 0:
-                                continue
-                            elif hasattr(self, 'climbing') and self.climbing:
-                                continue
                         self.rect.y -= overlap_y
                         collision_occurred = True
                         colliding[collision_dir] = True

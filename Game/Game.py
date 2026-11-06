@@ -11,7 +11,7 @@ class Game:
         # os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (20, 50)
         pygame.init()
 
-        icon = pygame.image.load('Resources/tim_icon.ico')
+        icon = pygame.image.load('Resources/LD.ico')
         pygame.display.set_icon(icon)
 
         self.display_flags = pygame.HWSURFACE | pygame.DOUBLEBUF

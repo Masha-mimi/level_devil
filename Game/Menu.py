@@ -29,26 +29,71 @@ class StartMenu(GameScene):
 
         y = self._text_rect.bottom + 250
         w, h = 40, 40
-        image = pygame.image.load(os.path.join(settings.img_folder, "HUD", "soon_portal1.png"))
-        imag = pygame.image.load(os.path.join(settings.img_folder, "HUD", "portal_1.png"))
-        ima = pygame.image.load(os.path.join(settings.img_folder, "HUD", "setings.png"))
-        self.start_bttn = Button((settings.SCREEN_WIDTH//22, y-110), (w, h), img=imag, callback=lambda: goto_scene("level_manager"))
-        self.settings_bttn = Button((settings.SCREEN_WIDTH//40, y+90), (w, h), img=ima, callback=lambda: goto_scene("settings_menu"))
-        # self.credits_bttn = Button((settings.SCREEN_WIDTH//2-75, y+150), (w, h), "Credits", lambda: goto_scene("credits"))
-        self.exit_bttn = Button((settings.SCREEN_WIDTH//2, y+150), (w, h), img=imag, callback=lambda: goto_scene("quit"))
+
+        # --- ЗМІНЕНО ---
+        # Кнопка для 1-го рівня
+        self.start_bttn_l1 = Button((settings.SCREEN_WIDTH // 22, y - 110), (w, h),
+                                    image_path="Resources/images/HUD/portal_1.png",
+                                    callback=lambda: goto_scene("level_manager", 0),
+                                    active=True)
+
+        # Кнопка для 2-го рівня
+        self.start_bttn_l2 = Button((settings.SCREEN_WIDTH // 22 + 85, y - 125), (w, h),
+                                    image_path="Resources/images/HUD/portal_1.png",
+                                    inactive_image_path="Resources/images/HUD/soon_portal1.png",
+                                    callback=lambda: goto_scene("level_manager", 1),
+                                    active=(settings.MAX_UNLOCKED_LEVEL >= 1))
+
+        # Кнопка для 3-го рівня
+        self.start_bttn_l3 = Button((settings.SCREEN_WIDTH // 22 + 190, y - 110), (w, h),
+                                    image_path="Resources/images/HUD/portal_1.png",
+                                    inactive_image_path="Resources/images/HUD/soon_portal1.png",
+                                    callback=lambda: goto_scene("level_manager", 2),
+                                    active=(settings.MAX_UNLOCKED_LEVEL >= 2))
+        # ---------------
+        self.start_bttn_l4 = Button((settings.SCREEN_WIDTH // 22 + 250, y - 70), (w, h),
+                                    image_path="Resources/images/HUD/portal_1.png",
+                                    inactive_image_path="Resources/images/HUD/soon_portal1.png",
+                                    callback=lambda: goto_scene("level_manager", 2),
+                                    active=(settings.MAX_UNLOCKED_LEVEL >= 2))
+
+        self.start_bttn_l5 = Button((settings.SCREEN_WIDTH // 22 + 210, y - 10), (w, h),
+                                    image_path="Resources/images/HUD/portal_1.png",
+                                    inactive_image_path="Resources/images/HUD/soon_portal1.png",
+                                    callback=lambda: goto_scene("level_manager", 2),
+                                    active=(settings.MAX_UNLOCKED_LEVEL >= 2))
+
+        self.settings_bttn = Button((settings.SCREEN_WIDTH//40, y+90), (w, h),
+                                    callback=lambda: goto_scene("settings_menu"),
+                                    image_path="Resources/images/HUD/setings.png")
+
+        self.exit_bttn = Button((settings.SCREEN_WIDTH//2, y+150), (w, h),
+                                callback=lambda: goto_scene("quit"),
+                                image_path="Resources/images/HUD/portal_1.png")
 
     def render(self, surface):
         surface.blit(self.bg, (0, 0))
-        self.start_bttn.render(surface)
+        # Малюємо всі 3 кнопки порталів
+        self.start_bttn_l1.render(surface)
+        self.start_bttn_l2.render(surface)
+        self.start_bttn_l3.render(surface)
+        self.start_bttn_l4.render(surface)
+        self.start_bttn_l5.render(surface)
         self.settings_bttn.render(surface)
         # self.credits_bttn.render(surface)
 
 
     def update(self, delta_time):
-        pass
+        # Оновлюємо стан активності кнопок у update, щоб вони ставали активними
+        # якщо settings.MAX_UNLOCKED_LEVEL зміниться
+        self.start_bttn_l2.active = (settings.MAX_UNLOCKED_LEVEL >= 1)
+        self.start_bttn_l3.active = (settings.MAX_UNLOCKED_LEVEL >= 2)
 
     def handle_events(self, event):
-        self.start_bttn.handle_events(event)
+        # Обробляємо події для всіх 3 порталів
+        self.start_bttn_l1.handle_events(event)
+        self.start_bttn_l2.handle_events(event)
+        self.start_bttn_l3.handle_events(event)
         self.settings_bttn.handle_events(event)
         # self.credits_bttn.handle_events(event)
         self.exit_bttn.handle_events(event)
@@ -62,7 +107,7 @@ class PauseMenu(GameScene):
         self._goto_scene = goto_scene
         GameScene.__init__(self)
         Mouse.set_visible(True)
-        w, h = 50, 50
+        w, h = 200, 60
 
         self._text_surface = Font.get_render("Paused", size="big")
         self._text_rect = self._text_surface.get_rect()
@@ -70,13 +115,20 @@ class PauseMenu(GameScene):
         self._text_y = self._text_rect.height // 2
 
         self.continue_bttn = Button(((settings.SCREEN_WIDTH-w)//2, self._text_rect.bottom + 50), (w, h),
-                                    "Continue", lambda: goto_scene("previous"))
+                                    image_path="Resources/images/HUD/buttons/continue_button.png",
+                                    callback=lambda: goto_scene("previous"))
+
         self.settings_bttn = Button(((settings.SCREEN_WIDTH - w) // 2, self._text_rect.bottom + 125), (w, h),
-                                    "Settings", lambda: goto_scene("settings_menu"))
-        self.start_menu_bttn = Button(((settings.SCREEN_WIDTH - w) // 2, self._text_rect.bottom + 200), (w, h), "Start Menu",
-                                lambda: goto_scene("start_menu"))
-        self.exit_bttn = Button(((settings.SCREEN_WIDTH - w) // 2, self._text_rect.bottom + 275), (w, h), "Quit",
-                                lambda: goto_scene("quit"))
+                                    image_path="Resources/images/HUD/buttons/settings_button.png",
+                                    callback=lambda: goto_scene("settings_menu"))
+
+        self.start_menu_bttn = Button(((settings.SCREEN_WIDTH - w) // 2, self._text_rect.bottom + 200), (w, h),
+                                      image_path="Resources/images/HUD/buttons/start_menu_button.png",
+                                      callback=lambda: goto_scene("start_menu"))
+
+        self.exit_bttn = Button(((settings.SCREEN_WIDTH - w) // 2, self._text_rect.bottom + 275), (w, h),
+                                image_path="Resources/images/HUD/buttons/exit_button.png",
+                                callback=lambda: goto_scene("quit"))
 
     def render(self, surface):
         surface.fill((35, 25, 40))
@@ -120,8 +172,9 @@ class SettingsMenu(GameScene):
         self._fps_checkbox = CheckBox((50, self._text_rect.bottom + 150), "Show FPS")
         self._fps_checkbox.selected = settings.SHOW_FPS
 
-        im = pygame.image.load(os.path.join(settings.img_folder, "HUD", "ok.png"))
-        self.continue_bttn = Button((50, (settings.SCREEN_HEIGHT - h - 25)), (w, h), im, self._on_done)
+        self.continue_bttn = Button(((settings.SCREEN_WIDTH - w) // 2, self._text_rect.bottom + 50), (70, 70),
+                                    image_path="Resources/images/HUD/buttons/ok.png",
+                                    callback=self._on_done)
 
     def _on_done(self):
         settings.SHOW_FPS = self._fps_checkbox.selected
@@ -175,7 +228,7 @@ class EndMenu(GameScene):
                 self._dx = [-50, 50][random.randint(0, 1)]
             self.pos[0] += self._dx*delta_time
 
-    def __init__(self, goto_scene, coins_collected, total_coins, total_deaths):
+    def __init__(self, goto_scene, total_deaths):
         self._goto_scene = goto_scene
         GameScene.__init__(self)
         Mouse.set_visible(True)
@@ -187,7 +240,7 @@ class EndMenu(GameScene):
         self._elapsed_time = 0
         self._confettis = [self.Confetti(self._colors[random.randrange(0, len(self._colors))]) for i in range(30)]
 
-        w, h = 50, 50
+        w, h = 200, 70
 
         self._heading_text_surface = Font.get_render("Congratulations!!", size="big")
         self._heading_text_rect = self._heading_text_surface.get_rect()
@@ -199,22 +252,20 @@ class EndMenu(GameScene):
         self._text_x = (settings.SCREEN_WIDTH - self._text_rect.width) // 2
         self._text_y = self._heading_text_y + self._heading_text_rect.height*2
 
-        self._stat_text_surface = Font.get_render("Coins Collected:  %d/%d"%(coins_collected, total_coins), size="normal")
-        self._stat_text_rect = self._stat_text_surface.get_rect()
-        self._stat_text_x = (settings.SCREEN_WIDTH - self._stat_text_rect.width) // 2
-        self._stat_text_y = self._text_y + self._text_rect.height * 3 // 2
-
         self._death_text_surface = Font.get_render("Total Deaths:  %d" % (total_deaths,))
         self._death_text_rect = self._death_text_surface.get_rect()
         self._death_text_x = (settings.SCREEN_WIDTH - self._death_text_rect.width) // 2
-        self._death_text_y = self._stat_text_y + self._stat_text_rect.height * 3 // 2
+        self._death_text_y = self._text_y + self._text_rect.height * 3 // 2
 
         button_y = self._death_text_y + self._death_text_rect.height
-        self.start_menu_bttn = Button(((settings.SCREEN_WIDTH - w) // 2, button_y + 50), (w, h), "Start Menu",
-                                lambda: goto_scene("start_menu"))
-        self.exit_bttn = Button(((settings.SCREEN_WIDTH - w) // 2, button_y + 125), (w, h), "Quit",
-                                lambda: goto_scene("quit"))
 
+        self.start_menu_bttn = Button(((settings.SCREEN_WIDTH - w) // 2, button_y), (w, h),
+                                    image_path="Resources/images/HUD/buttons/start_menu_button.png",
+                                    callback=lambda: goto_scene("start_menu"))
+
+        self.exit_bttn = Button(((settings.SCREEN_WIDTH - w) // 2, button_y + 125), (w, h),
+                                    image_path="Resources/images/HUD/buttons/exit_button.png",
+                                    callback=lambda: goto_scene("quit"))
         self.victory_sound.play()
 
     def render(self, surface):
@@ -222,7 +273,6 @@ class EndMenu(GameScene):
         # surface.blit(self._heading_text_surface, (self._heading_text_x, self._heading_text_y))
         surface.blit(Font.get_render("Congratulations!!", color=self._colors[self._color_i], size="big"), (self._heading_text_x, self._heading_text_y))
         surface.blit(self._text_surface, (self._text_x, self._text_y))
-        surface.blit(self._stat_text_surface, (self._stat_text_x, self._stat_text_y))
         surface.blit(self._death_text_surface, (self._death_text_x, self._death_text_y))
         self.start_menu_bttn.render(surface)
         self.exit_bttn.render(surface)

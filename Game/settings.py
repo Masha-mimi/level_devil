@@ -39,3 +39,6 @@ img_folder = os.path.join(resource_folder, 'images')
 music_folder = os.path.join(resource_folder, 'music')
 font_folder = os.path.join(resource_folder, 'font')
 levels_folder = os.path.join(resource_folder, 'levels')
+
+# Game progress
+MAX_UNLOCKED_LEVEL = 0  # 0 означає, що відкрито тільки 1-й рівень
